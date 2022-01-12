@@ -45,7 +45,6 @@ class _FirstScreenState extends State<FirstScreen> {
   List<Nota> notshowNotas = [];
   List<String> nums=[];
   List<String> notdaynums=[];
-  
   List<String> litz = [];
 
   void addNote() async {
@@ -54,18 +53,13 @@ class _FirstScreenState extends State<FirstScreen> {
       String a = "$focusedDay";
       String b = a.substring(0, 10);
       a = a.substring(17);
-      /*if(a != '00.000Z'){
-        texto = "Sin fecha establecida";
-        }
-      else{texto = b;
-      }*/
       texto = b;
       Nota nota = Nota(data['title'], data['cont'], data['them'],texto);
       setState(()=> notas.add(nota));
       setState(()=> nums.add('$indexa'));
       setState(()=> litz.add('$indexa'));//comentar si no funciona
       guardar_datos(data['title'], data['cont'], data['them'], indexa, texto);
-      guardar_lista(litz/*nums*/);
+      guardar_lista(litz);
       print('$nums'+'<=guardado en lista boton +');
       changevalue();
       mostrarNotasDia();
@@ -102,8 +96,6 @@ class _FirstScreenState extends State<FirstScreen> {
                   focusedDay = focusDay;
                   nowday = DateTime.now();
                 });
-                //print(selectDay);
-                //mostrar_datos();
                 mostrarNotasDia();
 
               },
@@ -136,7 +128,7 @@ class _FirstScreenState extends State<FirstScreen> {
             ),
             ListView.separated(
               padding: const EdgeInsets.all(10),
-              itemCount: notas.length,//notas.length,
+              itemCount: notas.length,
               physics: const NeverScrollableScrollPhysics(),
               shrinkWrap: true,
               itemBuilder: (BuildContext context, int index){
@@ -198,24 +190,13 @@ class _FirstScreenState extends State<FirstScreen> {
                   ))
                   ),
                 onDismissed: (direction){
-                  //print(notdaynums[index]);
-                  //elList(notdaynums[index]);
                   setState(() {
-                    //notas.removeAt(index);
                     nums.removeAt(index);
                     notas.removeAt(index);
-                    //daynums.removeAt(index);
-                    //nums.addAll(notdaynums);
                     var nList =[...nums, ...notdaynums];
-                    //notdaynums.clear();
                     nList = LinkedHashSet<String>.from(nList).toList();
-                   // print(nList);
-                    //notas = [...notas,...notshowNotas];
                     guardar_lista(nList);
-                    print ('$nList'+'lista a guardar nList');
                   });
-                  //print(index);
-                  //print(daynums[index]);//este es el valor para identificar
                 },
                 );
               },
@@ -232,25 +213,6 @@ class _FirstScreenState extends State<FirstScreen> {
     setState(()=>name);
 
     nums = await prefs.getStringList('list')??[];
-    /*for(String i in nums){
-      String tit = await prefs.getString('titulo'+i)??"";
-      String not = await prefs.getString('contenido'+i)??"";
-      String colstr = await prefs.getString('testcolor'+i)??"";
-      int val = await prefs.getInt('intcolor'+i)??0;
-      String dat = await prefs.getString('date'+i)??"";
-      //int borrar = await prefs.getInt('value'+i)??0;
-
-      Color otherColor = Color(val);
-
-      String a = '$selectedDay';
-      String b = a.substring(0, 10);
-      Nota nota = Nota(tit, not, otherColor, dat);
-      setState(()=> notas.add(nota));
-
-      /*if(dat == b){
-      setState(()=> showNotas.add(nota));
-      }*/
-    }*/
   }
 
 
@@ -280,10 +242,6 @@ class _FirstScreenState extends State<FirstScreen> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
     List<String>listn = await prefs.getStringList('list')??[];
-    //setState(()=>notshowNotas=notas);
-    print('$nums'+'<=este es nums del dia anterior');
-    print('$notdaynums'+'<=este es not day nums del dia anterior');
-    print('$listn'+'<=todos los elemtos guardados');
 
     if(notas.isNotEmpty){
       setState(() {
@@ -304,7 +262,6 @@ class _FirstScreenState extends State<FirstScreen> {
       String n = m.substring(0, 10);
 
       Nota shnota = Nota(ti, no, otherColo, da);
-      //setState(()=> notas.add(shnota));
 
       if(da == n){
         if(nums.contains(j)){}
@@ -345,7 +302,6 @@ class _FirstScreenState extends State<FirstScreen> {
       String n = m.substring(0, 10);
 
       Nota shnota = Nota(ti, no, otherColo, da);
-      //setState(()=> notas.add(shnota));
 
       if(da == n){
         setState(() {
@@ -368,20 +324,8 @@ class _FirstScreenState extends State<FirstScreen> {
     notdaynums = LinkedHashSet<String>.from(notdaynums).toList();
     litz = [...nums,...notdaynums];
     litz= LinkedHashSet<String>.from(litz).toList();
-    print('$litz'+'este es el litz');
     guardar_lista(litz);
   }
-
-  /*void elList(String li) {
-    int valD = int.parse(li);
-
-    setState((){
-    //notas.removeAt(valD);
-    nums.removeAt(valD);
-    guardar_lista(nums);
-    //print (li);
-    });
-  }*/
 
 }
 
@@ -390,7 +334,6 @@ class Nota{
   String descripcion = "";
   Color color = Color(0xffF90A0A);
   String date;
-  //int llave = 0;
 
   Nota(this.titulo, this.descripcion, this.color, this.date);
 }
